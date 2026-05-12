@@ -19,7 +19,7 @@ RUN dnf5 install -y /tmp/akmods-rpms/kernel/kernel-[0-9]*.rpm \
   /tmp/akmods-rpms/dummy/*.rpm
 
 # 4. Bazzite Core & DE
-RUN dnf5 install -y @kde-desktop-environment && \
+RUN dnf5 install -y --allowerasing @kde-desktop-environment && \
   dnf5 install -y \
   steam gamescope mangohud goverlay \
   bazzite-config bazzite-arch-con-fix \
