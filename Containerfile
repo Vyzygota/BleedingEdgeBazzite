@@ -6,6 +6,7 @@ RUN dnf install -y dnf5 && \
   dnf5 install -y 'dnf-command(copr)' && \
   dnf5 copr enable -y ublue-os/staging && \
   dnf5 copr enable -y ublue-os/packages && \
+  dnf5 copr enable -y lizardbyte/sunshine && \
   dnf5 install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-rawhide.noarch.rpm \
   https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-rawhide.noarch.rpm
 
@@ -22,7 +23,6 @@ RUN dnf5 install -y /tmp/akmods-rpms/kernel/kernel-[0-9]*.rpm \
 RUN dnf5 install -y --allowerasing @kde-desktop-environment && \
   dnf5 install -y \
   steam gamescope mangohud goverlay \
-  bazzite-config bazzite-arch-con-fix \
   sunshine flatpak-spawn zenity
 
 # 5. Moduły KO
