@@ -6,8 +6,9 @@ FROM ghcr.io/ublue-os/bazzite:latest
 COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms /tmp/akmods-rpms
 
 # 2. Instalacja custom kernela z Fabryki
-RUN dnf5 install -y \
-  /tmp/akmods-rpms/kernel/kernel-[0-9]*.rpm \
+# rpm zamiast dnf5 — omija exclude filtering Bazzite na pakiety kernel
+RUN rpm -ivh --nodeps --force \
+  /tmp/akmods-rpms/kernel/kernel-*.x86_64.rpm \
   /tmp/akmods-rpms/kernel/kernel-core-*.rpm \
   /tmp/akmods-rpms/kernel/kernel-modules-*.rpm \
   /tmp/akmods-rpms/dummy/*.rpm
