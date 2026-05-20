@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
-# Bazzite jako baza — dziedziczy ostree.bootable, ma KDE i gaming stack
 FROM ghcr.io/ublue-os/bazzite:latest
+
+LABEL org.opencontainers.image.title="BleedingEdgeBazzite" \
+      ostree.bootable="true"
 
 # 1. Moduły NVIDIA + LenovoLegionLinux z Fabryki
 COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms /tmp/akmods-rpms
