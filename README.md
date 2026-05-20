@@ -1,43 +1,46 @@
-# 🕷️ BleedingEdgeBazzite
+# BleedingEdgeBazzite
 
 ![Build Status](https://github.com/Vyzygota/BleedingEdgeBazzite/actions/workflows/build.yml/badge.svg)
 
-**BleedingEdgeBazzite** to obraz systemowy oparty na **najnowszej stabilnej Fedorze**, zaprojektowany dla entuzjastów chcących korzystać z absolutnie najświeższego kernela i sterowników NVIDIA — bez czekania na oficjalne wydania dystrybucji.
+A custom [Bazzite](https://bazzite.gg) image that ships the latest stable Linux kernel and bleeding-edge NVIDIA drivers — compiled fresh before they reach official repositories.
 
-## 🚀 Kluczowe cechy
+## What it is
 
-*   **Kernel Latest Stable**: Zawsze najnowszy stable kernel prosto z `kernel.org` — wersja wykrywana automatycznie przy każdym buildzie.
-*   **NVIDIA Bleeding Edge**: Najnowszy stabilny sterownik NVIDIA kompilowany bezpośrednio ze źródeł z `download.nvidia.com`.
-*   **Fedora Latest Stable**: Baza zawsze aktualizowana do najnowszego stabilnego wydania Fedory — automatycznie przy każdym nowym releases.
-*   **Bazzite Experience**: Integracja z Steam, Gamescope i narzędziami uBlue — środowisko graficzne w stylu SteamOS.
-*   **Antigravity Integrated**: Wbudowany agent monitorujący status modułów jądra.
+BleedingEdgeBazzite is a bootable OCI image built on top of `ghcr.io/ublue-os/bazzite:latest`. It inherits the full Bazzite experience (KDE Plasma, Steam, Gamescope, MangoHud) and replaces the kernel and NVIDIA modules with versions built by the companion [akmods-nvidia-custom](https://github.com/Vyzygota/akmods-nvidia-custom) factory.
 
-## 🏗️ Architektura
-
-Projekt działa w ścisłej symbiozie z [akmods-nvidia-custom](https://github.com/Vyzygota/akmods-nvidia-custom), który pełni rolę **"Fabryki"** — kompiluje moduły NVIDIA i vanilla kernel, pakuje je jako RPM i udostępnia jako obraz OCI.
+## How it works
 
 ```
-akmods-nvidia-custom              BleedingEdgeBazzite
-─────────────────────             ──────────────────────────────
-Cyber-Pająk wykrywa:              fedora:latest
- • Fedora latest stable    →      + KDE Plasma (SteamOS-like)
- • NVIDIA latest stable    →      + Steam, Gamescope, MangoHud
- • Kernel latest stable    →      + kernel RPMs z Fabryki
-Kompiluje moduły NVIDIA           + moduły NVIDIA z Fabryki
-Pakuje do OCI → ghcr.io   ──────→ gotowy obraz do rebase
+akmods-nvidia-custom (Factory)        BleedingEdgeBazzite
+──────────────────────────────        ──────────────────────────────
+Cyber-Spider detects:                 bazzite:latest
+  • Fedora latest stable       →        + latest stable kernel RPMs
+  • NVIDIA latest stable       →        + bleeding-edge NVIDIA kmods
+  • Linux kernel latest stable →        + ostree.bootable label
+Compiles modules, packages RPMs
+Pushes OCI → ghcr.io          ──────→  ready to rebase
 ```
 
-## 📦 Instalacja (Rebase)
+The factory runs daily at 03:00 UTC. If any version changed since the last build, it compiles new packages and automatically triggers a BleedingEdgeBazzite rebuild. If nothing changed, no compute is wasted.
 
-Jeśli korzystasz z Fedory Atomic (Bazzite/uBlue), możesz przejść na tę wersję komendą:
+## Installation
+
+From any Fedora Atomic system (Bazzite, uBlue, Silverblue):
 
 ```bash
 rpm-ostree rebase ostree-unverified-registry:ghcr.io/vyzygota/bleedingedgebazzite:latest
 ```
 
-## 🔄 Automatyczne aktualizacje
+Then reboot. To revert to your previous image at any time:
 
-Build uruchamiany jest automatycznie przy każdym pushu oraz codziennie o 6:00 UTC, aby wyłapać nowe wersje kernela i sterowników NVIDIA. Dependabot pilnuje aktualności akcji CI/CD.
+```bash
+rpm-ostree rollback
+```
+
+## Updates
+
+Images rebuild automatically when the factory produces new drivers or kernel. No action needed — the next `rpm-ostree upgrade` will pick up the new image.
 
 ---
-*Powered by Vyzygota & Antigravity Agent*
+
+*Built by Vyzygota with [Claude Code](https://claude.ai/code) (Anthropic)*
