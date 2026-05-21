@@ -9,6 +9,9 @@ COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms /tmp/akmods-rpms
 
 # 2. Instalacja custom kernela z Fabryki
 # rpm zamiast dnf5 — omija exclude filtering Bazzite na pakiety kernel
+# Najpierw usuwamy stary kernel (rpm-ostree pozwala tylko na jeden w /usr/lib/modules)
+RUN rpm -qa | grep -E '^kernel-(core|modules|modules-core|modules-extra)-' | xargs -r rpm -e --nodeps || true
+
 RUN rpm -ivh --nodeps --force \
   /tmp/akmods-rpms/kernel/kernel-*.x86_64.rpm \
   /tmp/akmods-rpms/kernel/kernel-core-*.rpm \
