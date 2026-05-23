@@ -47,6 +47,7 @@ jobs:
           file: ./Containerfile
           push: true
           tags: ghcr.io/vyzygota/bleedingedgebazzite:latest
+          provenance: false
           # Pozwalamy na użycie cache, aby buildy były szybsze
           cache-from: type=gha
           cache-to: type=gha,mode=max

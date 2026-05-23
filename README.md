@@ -6,7 +6,7 @@ A custom [Bazzite](https://bazzite.gg) image that ships the latest stable Linux 
 
 ## What it is
 
-BleedingEdgeBazzite is a bootable OCI image built on top of `ghcr.io/ublue-os/bazzite:latest`. It inherits the full Bazzite experience (KDE Plasma, Steam, Gamescope, MangoHud) and replaces the kernel and NVIDIA modules with versions built by the companion [akmods-nvidia-custom](https://github.com/Vyzygota/akmods-nvidia-custom) factory.
+BleedingEdgeBazzite is a bootable OCI image built on top of `ghcr.io/ublue-os/bazzite-deck:latest`. It inherits the full Bazzite experience (KDE Plasma, Steam, Gamescope, MangoHud) and replaces the kernel and NVIDIA modules with versions built by the companion [akmods-nvidia-custom](https://github.com/Vyzygota/akmods-nvidia-custom) factory.
 
 ## How it works
 
