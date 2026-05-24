@@ -4,9 +4,19 @@ FROM ghcr.io/ublue-os/bazzite-deck:unstable-44
 LABEL org.opencontainers.image.title="BleedingEdgeBazzite" \
       ostree.bootable="true"
 
-# 1. Blokada nouveau — musi załadować się proprietary NVIDIA, nie open-source nouveau
-RUN echo -e "blacklist nouveau\noptions nouveau modeset=0" \
-    > /etc/modprobe.d/blacklist-nouveau.conf
+# 1. Blokada nouveau — cztery poziomy ochrony przed konfliktem z NVIDIA
+# Poziom 0: parametry jądra (bootloader) — najwcześniejszy możliwy punkt
+RUN mkdir -p /usr/lib/bootc/kargs.d && \
+    printf '[kargs]\nkargs = ["rd.driver.blacklist=nouveau", "modprobe.blacklist=nouveau", "nvidia-drm.modeset=1"]\n' \
+      > /usr/lib/bootc/kargs.d/nvidia.toml
+# Poziom 1: initramfs (dracut) — przed startem systemd
+RUN echo 'omit_drivers+=" nouveau "' \
+      > /etc/dracut.conf.d/blacklist-nouveau.conf
+# Poziom 2+3: userspace modprobe — blacklist + twardy zakaz ładowania
+RUN echo -e "blacklist nouveau\ninstall nouveau /bin/false\noptions nouveau modeset=0" \
+      > /etc/modprobe.d/blacklist-nouveau.conf && \
+    echo -e "options nvidia-drm modeset=1\noptions nvidia NVreg_PreserveVideoMemoryAllocations=1" \
+      > /etc/modprobe.d/nvidia.conf
 
 # 2. Moduły NVIDIA + LenovoLegionLinux z Fabryki
 COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms /tmp/akmods-rpms
