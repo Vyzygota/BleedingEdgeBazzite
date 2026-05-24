@@ -22,9 +22,10 @@ jobs:
 
       - name: Download Fedora 44 netinstall ISO
         run: |
-          wget -q \
-            "https://dl.fedoraproject.org/pub/fedora/linux/releases/44/Everything/x86_64/iso/Fedora-Everything-netinstall-x86_64-44-1.4.iso" \
-            -O netinstall.iso
+          BASE="https://dl.fedoraproject.org/pub/fedora/linux/releases/44/Everything/x86_64/iso"
+          FILENAME=$(curl -s "$BASE/" | grep -oP 'Fedora-Everything-netinstall-x86_64-44[^"]+\.iso' | head -1)
+          echo "Pobieranie: $FILENAME"
+          wget -q "$BASE/$FILENAME" -O netinstall.iso
 
       - name: Inject kickstart
         run: mkksiso --ks installer/beb.ks netinstall.iso BEB-installer.iso
