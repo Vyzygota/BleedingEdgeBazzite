@@ -25,6 +25,17 @@ The factory runs daily at 03:00 UTC. If any version changed since the last build
 
 ## Installation
 
+### Option A — Installer ISO (fresh install)
+
+Download `BEB-installer.iso` from [Releases](https://github.com/Vyzygota/BleedingEdgeBazzite/releases/tag/installer-latest), write it to a USB drive and boot from it. Anaconda will pull `ghcr.io/vyzygota/bleedingedgebazzite:latest` from the registry and install directly to disk. Internet connection required.
+
+```bash
+# Write to USB (replace /dev/sdX with your drive)
+dd if=BEB-installer.iso of=/dev/sdX bs=4M status=progress
+```
+
+### Option B — Rebase from existing Fedora Atomic system
+
 From any Fedora Atomic system (Bazzite, uBlue, Silverblue):
 
 ```bash
