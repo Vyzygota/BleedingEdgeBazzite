@@ -1,0 +1,40 @@
+name: Build BleedingEdgeBazzite Installer ISO
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-iso:
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:44
+      options: --privileged
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install lorax
+        run: dnf install -y lorax wget
+
+      - name: Download Fedora 44 netinstall ISO
+        run: |
+          wget -q \
+            "https://dl.fedoraproject.org/pub/fedora/linux/releases/44/Everything/x86_64/iso/Fedora-Everything-netinstall-x86_64-44-1.4.iso" \
+            -O netinstall.iso
+
+      - name: Inject kickstart
+        run: mkksiso --ks installer/beb.ks netinstall.iso BEB-installer.iso
+
+      - name: Create or update release and upload ISO
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: installer-latest
+          name: BleedingEdgeBazzite Installer ISO
+          body: |
+            Netinstall ISO — pobiera obraz z GHCR podczas instalacji.
+            Wymagane połączenie z internetem.
+          files: BEB-installer.iso
