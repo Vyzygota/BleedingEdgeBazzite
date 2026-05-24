@@ -25,7 +25,7 @@ jobs:
           for BASE in \
             "https://dl.fedoraproject.org/pub/fedora/linux/releases/44/Everything/x86_64/iso" \
             "https://dl.fedoraproject.org/pub/fedora/linux/development/44/Everything/x86_64/iso"; do
-            FILENAME=$(curl -s "$BASE/" | grep -oP 'Fedora-Everything-netinstall-x86_64-44[^"]+\.iso' | head -1)
+            FILENAME=$(curl -s "$BASE/" | grep -oP 'Fedora-Everything-netinst-x86_64-44[^"]+\.iso' | head -1)
             if [ -n "$FILENAME" ]; then
               echo "Pobieranie: $BASE/$FILENAME"
               wget -q "$BASE/$FILENAME" -O netinstall.iso
