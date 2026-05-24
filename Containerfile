@@ -39,7 +39,40 @@ RUN KERNEL_VERSION=$(rpm -q --qf "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel-core |
   depmod -a $KERNEL_VERSION && \
   rm -rf /tmp/akmods-rpms
 
-# 5. Antigravity Agent
+# 5. First Boot Diagnostics
+RUN cat > /usr/bin/beb-firstboot-diag << 'SCRIPT'
+#!/bin/bash
+LOG=/var/log/beb-firstboot.log
+{
+  echo "=== BleedingEdgeBazzite First Boot Diagnostics ==="
+  echo "Data: $(date)"
+  echo ""
+  echo "--- Kernel ---"
+  uname -r
+  echo ""
+  echo "--- Cmdline ---"
+  cat /proc/cmdline
+  echo ""
+  echo "--- Moduły nvidia/nouveau ---"
+  lsmod | grep -E 'nvidia|nouveau' || echo "(brak)"
+  echo ""
+  echo "--- dmesg: nvidia/nouveau/drm ---"
+  dmesg | grep -iE 'nvidia|nouveau|drm' || echo "(brak)"
+  echo ""
+  echo "--- Usługi które nie wystartowały ---"
+  systemctl --failed --no-legend || echo "(brak)"
+  echo ""
+  echo "--- rpm-ostree status ---"
+  rpm-ostree status 2>&1
+} 2>&1 | tee $LOG
+SCRIPT
+RUN chmod +x /usr/bin/beb-firstboot-diag
+
+RUN printf '[Unit]\nDescription=BleedingEdgeBazzite First Boot Diagnostics\nConditionPathExists=!/var/log/beb-firstboot.log\nAfter=multi-user.target\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/beb-firstboot-diag\nRemainAfterExit=yes\n\n[Install]\nWantedBy=multi-user.target\n' \
+  > /etc/systemd/system/beb-firstboot.service
+RUN systemctl enable beb-firstboot.service
+
+# 6. Antigravity Agent
 RUN <<'EOF' tee /usr/bin/antigravity
 #!/bin/bash
 if command -v zenity &> /dev/null; then
