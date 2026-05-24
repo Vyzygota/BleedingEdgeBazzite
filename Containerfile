@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ghcr.io/ublue-os/bazzite-deck:unstable-44
+FROM ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-44
 
 LABEL org.opencontainers.image.title="BleedingEdgeBazzite" \
       ostree.bootable="true"
