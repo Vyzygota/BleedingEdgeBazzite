@@ -1,13 +1,17 @@
 # syntax=docker/dockerfile:1
-FROM ghcr.io/ublue-os/bazzite-deck:latest
+FROM ghcr.io/ublue-os/bazzite-deck:unstable-44
 
 LABEL org.opencontainers.image.title="BleedingEdgeBazzite" \
       ostree.bootable="true"
 
-# 1. Moduły NVIDIA + LenovoLegionLinux z Fabryki
+# 1. Blokada nouveau — musi załadować się proprietary NVIDIA, nie open-source nouveau
+RUN echo -e "blacklist nouveau\noptions nouveau modeset=0" \
+    > /etc/modprobe.d/blacklist-nouveau.conf
+
+# 2. Moduły NVIDIA + LenovoLegionLinux z Fabryki
 COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms /tmp/akmods-rpms
 
-# 2. Instalacja custom kernela z Fabryki
+# 3. Instalacja custom kernela z Fabryki
 # rpm zamiast dnf5 — omija exclude filtering Bazzite na pakiety kernel
 # Najpierw usuwamy stary kernel (rpm-ostree pozwala tylko na jeden w /usr/lib/modules)
 RUN rpm -qa | grep -E '^kernel-(core|modules|modules-core|modules-extra)-' | xargs -r rpm -e --nodeps || true
@@ -18,14 +22,14 @@ RUN rpm -ivh --nodeps --force \
   /tmp/akmods-rpms/kernel/kernel-modules-*.rpm \
   /tmp/akmods-rpms/dummy/*.rpm
 
-# 3. Wstrzyknięcie modułów KO dla nowego kernela
+# 4. Wstrzyknięcie modułów KO dla nowego kernela
 RUN KERNEL_VERSION=$(rpm -q --qf "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel-core | head -n 1) && \
   mkdir -p /lib/modules/$KERNEL_VERSION/extra/custom && \
   cp /tmp/akmods-rpms/kmods/*.ko /lib/modules/$KERNEL_VERSION/extra/custom/ && \
   depmod -a $KERNEL_VERSION && \
   rm -rf /tmp/akmods-rpms
 
-# 4. Antigravity Agent
+# 5. Antigravity Agent
 RUN <<'EOF' tee /usr/bin/antigravity
 #!/bin/bash
 if command -v zenity &> /dev/null; then
