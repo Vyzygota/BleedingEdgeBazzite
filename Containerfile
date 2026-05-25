@@ -39,7 +39,11 @@ RUN KERNEL_VERSION=$(rpm -q --qf "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel-core |
   depmod -a $KERNEL_VERSION && \
   rm -rf /tmp/akmods-rpms
 
-# 5. First Boot Diagnostics
+# 5. SELinux — tryb permissive dla gamescope (F44 brakuje polityki execmem dla gamescope)
+RUN semanage permissive -a gamescope_t 2>/dev/null || \
+    sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+
+# 6. First Boot Diagnostics
 RUN cat > /usr/bin/beb-firstboot-diag << 'SCRIPT'
 #!/bin/bash
 LOG=/var/log/beb-firstboot.log
@@ -72,7 +76,7 @@ RUN printf '[Unit]\nDescription=BleedingEdgeBazzite First Boot Diagnostics\nCond
   > /etc/systemd/system/beb-firstboot.service
 RUN systemctl enable beb-firstboot.service
 
-# 6. Antigravity Agent
+# 7. Antigravity Agent
 RUN <<'EOF' tee /usr/bin/antigravity
 #!/bin/bash
 if command -v zenity &> /dev/null; then
