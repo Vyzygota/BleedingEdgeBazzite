@@ -88,3 +88,10 @@ else
 fi
 EOF
 RUN chmod +x /usr/bin/antigravity
+
+# 8. Return.desktop — bit wykonywalny (brak w upstream skelecie F44)
+RUN chmod +x /etc/skel/Desktop/Return.desktop
+
+RUN printf '[Unit]\nDescription=Fix Return.desktop executable bit\nConditionPathExists=!/var/lib/beb-return-desktop-fixed\nAfter=local-fs.target\n\n[Service]\nType=oneshot\nExecStart=/bin/bash -c "find /home -maxdepth 2 -name Return.desktop -exec chmod +x {} \\; && touch /var/lib/beb-return-desktop-fixed"\nRemainAfterExit=yes\n\n[Install]\nWantedBy=multi-user.target\n' \
+  > /etc/systemd/system/beb-fix-return-desktop.service
+RUN systemctl enable beb-fix-return-desktop.service
