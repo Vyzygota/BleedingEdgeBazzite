@@ -2,56 +2,87 @@
 
 ![Build Status](https://github.com/Vyzygota/BleedingEdgeBazzite/actions/workflows/build.yml/badge.svg)
 
-A custom [Bazzite](https://bazzite.gg) image that ships the latest stable Linux kernel and bleeding-edge NVIDIA drivers — compiled fresh before they reach official repositories.
+Bootowalne OCI image na bazie [Bazzite](https://bazzite.gg) z **najnowszym stabilnym** kernelem Linuxa i sterownikami NVIDIA — skompilowanymi przez dedykowaną fabrykę zanim trafią do oficjalnych repozytoriów.
 
-## What it is
+## Co to jest
 
-BleedingEdgeBazzite is a bootable OCI image built on top of `ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-44`. It inherits the full Bazzite experience (KDE Plasma, Steam, Gamescope, MangoHud) and replaces the kernel and NVIDIA modules with versions built by the companion [akmods-nvidia-custom](https://github.com/Vyzygota/akmods-nvidia-custom) factory.
+BleedingEdgeBazzite (BEB) dziedziczy pełne doświadczenie Bazzite (KDE Plasma, Steam, Gamescope, MangoHud) i zastępuje kernel oraz moduły NVIDIA wersjami zbudowanymi przez fabrykę [akmods-nvidia-custom](https://github.com/Vyzygota/akmods-nvidia-custom). Obraz jest dynamicznie rebazowany na najnowszą stabilną Fedorę.
 
-## How it works
+## Jak działa potok
 
 ```
-akmods-nvidia-custom (Factory)        BleedingEdgeBazzite
-──────────────────────────────        ──────────────────────────────
-Cyber-Spider detects:                 bazzite-deck-nvidia:unstable-44
-  • Fedora latest stable       →        + latest stable kernel RPMs
-  • NVIDIA latest stable       →        + bleeding-edge NVIDIA kmods
-  • Linux kernel latest stable →        + ostree.bootable label
-Compiles modules, packages RPMs
-Pushes OCI → ghcr.io          ──────→  ready to rebase
+Źródła zewnętrzne                 Fabryka (akmods-nvidia-custom)
+─────────────────                 ──────────────────────────────
+Fedora releases page   ──────→    Cyber-Pająk wykrywa wersje
+NVIDIA latest.txt      ──────→    codziennie o 03:00 UTC
+COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel RPMs
+  stable-fedora-releases            + NVIDIA kmods (.ko)
+                                    + pushuje do GHCR
+                                    + wysyła dispatch do BEB
+                                          │
+                                          ▼
+                              BleedingEdgeBazzite (ten repo)
+                              ─────────────────────────────
+                              FROM bazzite-deck-nvidia:unstable-{FEDORA}
+                                + kernel RPMs z Fabryki
+                                + NVIDIA kmods z Fabryki
+                                + blacklist nouveau (4 poziomy)
+                                + SELinux permissive dla gamescope
+                                + beb-firstboot-diag service
+                                + Return.desktop fix
+                              → ghcr.io/vyzygota/bleedingedgebazzite:latest
+                                          │
+                                          ▼
+                                    BEB-installer.iso
+                                   (GitHub Releases)
 ```
 
-The factory runs daily at 03:00 UTC. If any version changed since the last build, it compiles new packages and automatically triggers a BleedingEdgeBazzite rebuild. If nothing changed, no compute is wasted.
+## Źródła wersji
 
-## Installation
+| Składnik | Źródło | Metoda wykrywania |
+|---|---|---|
+| Fedora | `dl.fedoraproject.org/pub/fedora/linux/releases/` | Najwyższy numer katalogu |
+| Kernel | COPR `@kernel-vanilla/fedora` → `stable-fedora-releases` | API COPR dla aktywnego chroota `fedora-{VER}-x86_64` |
+| NVIDIA driver | `download.nvidia.com/XFree86/Linux-x86_64/latest.txt` | Pierwsze pole pierwszej linii |
+| Base image | `ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-{FEDORA}` | Wersja Fedory z dispatcha Fabryki |
 
-### Option A — Installer ISO (fresh install)
+> **Kernel:** `kernel.org` podaje `latest_stable`, ale COPR `stable-fedora-releases` buduje z ~1–3 tygodniowym opóźnieniem. Pająk pyta COPR co faktycznie jest dostępne dla aktywnej Fedory — to gwarantuje że instalowany kernel istnieje w repozytorium.
 
-Download `BEB-installer.iso` from [Releases](https://github.com/Vyzygota/BleedingEdgeBazzite/releases/tag/installer-latest), write it to a USB drive and boot from it. Anaconda will pull `ghcr.io/vyzygota/bleedingedgebazzite:latest` from the registry and install directly to disk. Internet connection required.
+## Automatyzacja
+
+Fabryka sprawdza wersje raz dziennie (03:00 UTC) i buduje tylko gdy coś się zmieniło (`versions.lock`). Każdy udany build Fabryki wyzwala BEB, każdy udany BEB wyzwala ISO — bez ręcznej interwencji.
+
+Watchdog (`fabryka-watchdog.yml`) alarmuje na Discord jeśli Fabryka milczy ponad 2 dni.
+
+## Instalacja
+
+### Opcja A — ISO (świeża instalacja)
+
+Pobierz `BEB-installer.iso` z [Releases](https://github.com/Vyzygota/BleedingEdgeBazzite/releases/tag/installer-latest), zapisz na USB i uruchom. Anaconda pobierze obraz z GHCR i zainstaluje na dysk. Wymagane połączenie z internetem.
 
 ```bash
-# Write to USB (replace /dev/sdX with your drive)
+# Zapis na USB (zastąp /dev/sdX właściwym dyskiem)
 dd if=BEB-installer.iso of=/dev/sdX bs=4M status=progress
 ```
 
-### Option B — Rebase from existing Fedora Atomic system
+### Opcja B — Rebase z istniejącego systemu Fedora Atomic
 
-From any Fedora Atomic system (Bazzite, uBlue, Silverblue):
+Z dowolnego systemu Fedora Atomic (Bazzite, uBlue, Silverblue):
 
 ```bash
 rpm-ostree rebase ostree-unverified-registry:ghcr.io/vyzygota/bleedingedgebazzite:latest
 ```
 
-Then reboot. To revert to your previous image at any time:
+Po reboocie. Powrót do poprzedniego obrazu w dowolnym momencie:
 
 ```bash
 rpm-ostree rollback
 ```
 
-## Updates
+## Aktualizacje
 
-Images rebuild automatically when the factory produces new drivers or kernel. No action needed — the next `rpm-ostree upgrade` will pick up the new image.
+Obrazy przebudowują się automatycznie gdy Fabryka wykryje nowy kernel lub sterownik. Nie trzeba nic robić — `rpm-ostree upgrade` pobierze nowy obraz przy następnym uruchomieniu.
 
 ---
 
-*Built by Vyzygota with [Claude Code](https://claude.ai/code) (Anthropic)*
+*Zbudowane przez Vyzygota z pomocą [Claude Code](https://claude.ai/code) (Anthropic)*
