@@ -16,6 +16,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Resolve Fedora version
+        id: fedora
+        run: |
+          # Z dispatcha Fabryki lub fallback do najnowszej stabilnej Fedory
+          FEDORA_VERSION="${{ github.event.client_payload.fedora_version }}"
+          if [ -z "$FEDORA_VERSION" ]; then
+            FEDORA_VERSION=$(curl -sL https://dl.fedoraproject.org/pub/fedora/linux/releases/ \
+              | grep -oE 'href="[0-9]+/"' | grep -oE '[0-9]+' | sort -rn | head -1)
+          fi
+          echo "fedora_version=$FEDORA_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Używam Fedory: $FEDORA_VERSION"
+
       - name: Checkout
         uses: actions/checkout@v6
 
@@ -48,6 +60,7 @@ jobs:
           push: true
           tags: ghcr.io/vyzygota/bleedingedgebazzite:latest
           provenance: false
-          # Pozwalamy na użycie cache, aby buildy były szybsze
+          build-args: |
+            FEDORA_VERSION=${{ steps.fedora.outputs.fedora_version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
-FROM ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-44
+ARG FEDORA_VERSION=44
+FROM ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-${FEDORA_VERSION}
 
 LABEL org.opencontainers.image.title="BleedingEdgeBazzite" \
       ostree.bootable="true"
