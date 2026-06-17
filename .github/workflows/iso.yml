@@ -2,6 +2,8 @@ name: Build BleedingEdgeBazzite Installer ISO
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [beb_built]
 
 permissions:
   contents: write
