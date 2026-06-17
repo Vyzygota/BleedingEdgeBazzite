@@ -1,0 +1,42 @@
+name: Fabryka Watchdog
+
+on:
+  schedule:
+    - cron: "0 8 * * *" # Codziennie o 08:00 UTC (5h po Fabryce)
+  workflow_dispatch:
+
+jobs:
+  watchdog:
+    name: Sprawdź czy Fabryka żyje
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sprawdź ostatni udany build Fabryki
+        env:
+          GH_TOKEN: ${{ secrets.BEB_DISPATCH_TOKEN }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          LAST_SUCCESS=$(gh api \
+            "repos/Vyzygota/akmods-nvidia-custom/actions/workflows/build.yml/runs?status=success&per_page=1" \
+            --jq '.workflow_runs[0].updated_at' 2>/dev/null)
+
+          if [ -z "$LAST_SUCCESS" ]; then
+            AGE_DAYS=999
+          else
+            LAST_TS=$(date -d "$LAST_SUCCESS" +%s)
+            NOW_TS=$(date +%s)
+            AGE_DAYS=$(( (NOW_TS - LAST_TS) / 86400 ))
+          fi
+
+          echo "Ostatni udany build Fabryki: ${LAST_SUCCESS:-nieznany} (${AGE_DAYS} dni temu)"
+
+          if [ "$AGE_DAYS" -ge 2 ]; then
+            echo "ALARM: Fabryka milczy od ${AGE_DAYS} dni!"
+            if [ -n "$DISCORD_WEBHOOK" ]; then
+              curl -s -H "Content-Type: application/json" \
+                -d "{\"content\": \"⚠️ **Fabryka Watchdog:** Cyber-Pająk nie dostarczył modułów od **${AGE_DAYS} dni** (ostatni sukces: ${LAST_SUCCESS:-nieznany}). BEB nie dostanie aktualizacji kernela/NVIDII dopóki Fabryka nie wróci do zdrowia. Sprawdź: https://github.com/Vyzygota/akmods-nvidia-custom/actions\"}" \
+                "$DISCORD_WEBHOOK"
+            fi
+            exit 1
+          else
+            echo "OK: Fabryka żyje."
+          fi
