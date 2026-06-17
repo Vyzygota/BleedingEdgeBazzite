@@ -40,7 +40,7 @@ jobs:
         run: mkksiso --ks installer/beb.ks netinstall.iso BEB-installer.iso
 
       - name: Create or update release and upload ISO
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: installer-latest
           name: BleedingEdgeBazzite Installer ISO
