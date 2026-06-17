@@ -79,9 +79,15 @@ Po reboocie. Powrót do poprzedniego obrazu w dowolnym momencie:
 rpm-ostree rollback
 ```
 
+> Jeśli pojawia się `error: Old and new refs are equal` — jesteś już na BEB. Użyj `rpm-ostree upgrade` żeby pobrać najnowszy build.
+
 ## Aktualizacje
 
-Obrazy przebudowują się automatycznie gdy Fabryka wykryje nowy kernel lub sterownik. Nie trzeba nic robić — `rpm-ostree upgrade` pobierze nowy obraz przy następnym uruchomieniu.
+Obrazy przebudowują się automatycznie gdy Fabryka wykryje nowy kernel lub sterownik. Żeby pobrać najnowszy build:
+
+```bash
+rpm-ostree upgrade
+```
 
 ---
 
