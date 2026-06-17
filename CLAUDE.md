@@ -1,5 +1,21 @@
 # BleedingEdgeBazzite — kontekst projektu
 
+## PODSTAWOWE ZAŁOŻENIE PROJEKTU — przeczytaj to najpierw
+
+> **ALL LATEST STABLE** — wszystkie składowe paczki mają być zawsze w najnowszej stabilnej wersji.
+
+Dotyczy to **każdego** elementu potoku:
+- Kernel Linux → najnowszy stable z COPR `@kernel-vanilla/fedora` (vanilla, bez patchy dystrybucji)
+- Sterownik NVIDIA → najnowszy stable `.run` z `download.nvidia.com`
+- Fedora → najnowsza stabilna wersja jako baza
+- Bazzite base image → `bazzite-deck-nvidia:unstable-{FEDORA_VERSION}`
+
+**Jeśli proponujesz zablokowanie wersji, cofnięcie do starszej lub pominięcie aktualizacji — uzasadnij to konkretnym technicznym blokerem, nie ostrożnością.** Projekt nazywa się *BleedingEdge* z powodu.
+
+Jedyne przyjęte ustępstwo: kernel pochodzi z COPR (vanilla Fedora packaging), nie kompilowany ze źródeł kernel.org — ze względu na czas buildu (1-2h vs 5 min).
+
+---
+
 ## Cel projektu
 
 Bootowalne OCI image na bazie Bazzite z **najnowszym stabilnym** kernelem,
