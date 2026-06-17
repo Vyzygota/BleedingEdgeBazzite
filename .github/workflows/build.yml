@@ -53,6 +53,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
+        id: build
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -64,3 +65,10 @@ jobs:
             FEDORA_VERSION=${{ steps.fedora.outputs.fedora_version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Trigger ISO rebuild
+        if: success()
+        run: |
+          gh workflow run iso.yml --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
