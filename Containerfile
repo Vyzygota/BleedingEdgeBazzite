@@ -23,15 +23,25 @@ RUN echo -e "blacklist nouveau\ninstall nouveau /bin/false\noptions nouveau mode
       > /etc/modprobe.d/nvidia.conf
 
 # 2. Moduły NVIDIA + LenovoLegionLinux z Fabryki
-COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms/nvidia /tmp/akmods-rpms/nvidia
-COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms/lll /tmp/akmods-rpms/lll
+COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms /tmp/akmods-rpms
 
-# 3. Instalacja sterowników NVIDIA z Fabryki
-RUN rpm -ivh --nodeps --force /tmp/akmods-rpms/nvidia/kmod-nvidia*.rpm
+# 3. Instalacja custom kernela z Fabryki
+# rpm zamiast dnf5 — omija exclude filtering Bazzite na pakiety kernel
+# Najpierw usuwamy stary kernel (rpm-ostree pozwala tylko na jeden w /usr/lib/modules)
+RUN rpm -qa | grep -E '^kernel-(core|modules|modules-core|modules-extra)-' | xargs -r rpm -e --nodeps || true
 
-# 4. Instalacja LenovoLegionLinux (Lenovo Legion LOQ 15ARP9i i inne modele)
-RUN rpm -ivh --nodeps --force /tmp/akmods-rpms/lll/kmod-LenovoLegionLinux*.rpm && \
-    rm -rf /tmp/akmods-rpms
+RUN rpm -ivh --nodeps --force \
+  /tmp/akmods-rpms/kernel/kernel-*.x86_64.rpm \
+  /tmp/akmods-rpms/kernel/kernel-core-*.rpm \
+  /tmp/akmods-rpms/kernel/kernel-modules-*.rpm \
+  /tmp/akmods-rpms/dummy/*.rpm
+
+# 4. Wstrzyknięcie modułów KO dla nowego kernela (NVIDIA + LenovoLegionLinux z Fabryki)
+RUN KERNEL_VERSION=$(rpm -q --qf "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel-core | head -n 1) && \
+  mkdir -p /lib/modules/$KERNEL_VERSION/extra/custom && \
+  cp /tmp/akmods-rpms/kmods/*.ko /lib/modules/$KERNEL_VERSION/extra/custom/ && \
+  depmod -a $KERNEL_VERSION && \
+  rm -rf /tmp/akmods-rpms
 
 # 5. SELinux — tryb permissive dla gamescope (F44 brakuje polityki execmem dla gamescope)
 RUN semanage permissive -a gamescope_t 2>/dev/null || \
