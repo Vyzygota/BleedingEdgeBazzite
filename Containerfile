@@ -1,5 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG FEDORA_VERSION=44
+ARG ANTIGRAVITY_URL
+ARG ANTIGRAVITY_IDE_URL
 FROM ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-${FEDORA_VERSION}
 
 LABEL org.opencontainers.image.title="BleedingEdgeBazzite" \
@@ -77,18 +79,18 @@ RUN printf '[Unit]\nDescription=BleedingEdgeBazzite First Boot Diagnostics\nCond
   > /etc/systemd/system/beb-firstboot.service
 RUN systemctl enable beb-firstboot.service
 
-# 7. Antigravity Agent
-RUN <<'EOF' tee /usr/bin/antigravity
-#!/bin/bash
-if command -v zenity &> /dev/null; then
-  zenity --info --title="BleedingEdgeBazzite Agent" \
-    --text="🚀 <b>Antigravity Agent Status: AKTYWNY</b>\n\nSystem: BleedingEdgeBazzite\nKernel: <b>$(uname -r)</b>\nNVIDIA: <b>Wstrzyknięto pomyślnie</b>" \
-    --width=400 --window-icon=system-run
-else
-  echo "BleedingEdgeBazzite Agent: AKTYWNY (Kernel: $(uname -r))"
-fi
-EOF
-RUN chmod +x /usr/bin/antigravity
+# 7. Antigravity 2.0 + Antigravity IDE
+RUN curl -fsSL "${ANTIGRAVITY_URL}" \
+    | tar -xz -C /opt/ && \
+    mv /opt/Antigravity-x64 /opt/antigravity && \
+    chmod 4755 /opt/antigravity/chrome-sandbox && \
+    ln -sf /opt/antigravity/antigravity /usr/local/bin/antigravity
+
+RUN curl -fsSL "${ANTIGRAVITY_IDE_URL}" \
+    | tar -xz -C /opt/ && \
+    mv "/opt/Antigravity IDE" /opt/antigravity-ide && \
+    chmod 4755 /opt/antigravity-ide/chrome-sandbox && \
+    ln -sf /opt/antigravity-ide/antigravity-ide /usr/local/bin/antigravity-ide
 
 # 8. Return.desktop — bit wykonywalny (brak w upstream skelecie F44)
 RUN chmod +x /etc/skel/Desktop/Return.desktop

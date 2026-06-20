@@ -8,6 +8,10 @@ Bootowalne OCI image na bazie [Bazzite](https://bazzite.gg) z **najnowszym stabi
 
 BleedingEdgeBazzite (BEB) dziedziczy pełne doświadczenie Bazzite (KDE Plasma, Steam, Gamescope, MangoHud) i zastępuje kernel oraz moduły NVIDIA wersjami zbudowanymi przez fabrykę [akmods-nvidia-custom](https://github.com/Vyzygota/akmods-nvidia-custom). Obraz jest dynamicznie rebazowany na najnowszą stabilną Fedorę.
 
+Dodatkowo BEB dołącza w obrazie:
+- **Google Antigravity 2.0** — platforma agentów AI, dostępna jako `/usr/local/bin/antigravity`
+- **Google Antigravity IDE** — środowisko programistyczne z AI, dostępne jako `/usr/local/bin/antigravity-ide`
+
 ## Jak działa potok
 
 ```
@@ -30,6 +34,8 @@ COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel 
                                 + SELinux permissive dla gamescope
                                 + beb-firstboot-diag service
                                 + Return.desktop fix
+                                + Antigravity 2.0 (latest stable)
+                                + Antigravity IDE (latest stable)
                               → ghcr.io/vyzygota/bleedingedgebazzite:latest
                                           │
                                           ▼
@@ -45,6 +51,8 @@ COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel 
 | Kernel | COPR `@kernel-vanilla/fedora` → `stable-fedora-releases` | API COPR dla aktywnego chroota `fedora-{VER}-x86_64` |
 | NVIDIA driver | `download.nvidia.com/XFree86/Linux-x86_64/latest.txt` | Pierwsze pole pierwszej linii |
 | Base image | `ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-{FEDORA}` | Wersja Fedory z dispatcha Fabryki |
+| Antigravity 2.0 | `antigravity.google/releases` | Playwright (`scripts/get-antigravity-urls.mjs`) — pierwszy link Linux x64 |
+| Antigravity IDE | `antigravity.google/download` | Playwright — link Linux x64 dla `Antigravity IDE.tar.gz` |
 
 > **Kernel:** `kernel.org` podaje `latest_stable`, ale COPR `stable-fedora-releases` buduje z ~1–3 tygodniowym opóźnieniem. Pająk pyta COPR co faktycznie jest dostępne dla aktywnej Fedory — to gwarantuje że instalowany kernel istnieje w repozytorium.
 
