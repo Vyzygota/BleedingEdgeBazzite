@@ -81,7 +81,8 @@ RUN printf '[Unit]\nDescription=BleedingEdgeBazzite First Boot Diagnostics\nCond
 RUN systemctl enable beb-firstboot.service
 
 # 7. Antigravity 2.0 + Antigravity IDE
-RUN curl -fsSL "${ANTIGRAVITY_URL}" \
+RUN mkdir -p /opt && \
+    curl -fsSL "${ANTIGRAVITY_URL}" \
     | tar -xz -C /opt/ && \
     mv /opt/Antigravity-x64 /opt/antigravity && \
     chmod 4755 /opt/antigravity/chrome-sandbox && \
