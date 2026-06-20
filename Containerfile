@@ -23,25 +23,15 @@ RUN echo -e "blacklist nouveau\ninstall nouveau /bin/false\noptions nouveau mode
       > /etc/modprobe.d/nvidia.conf
 
 # 2. Moduły NVIDIA + LenovoLegionLinux z Fabryki
-COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms /tmp/akmods-rpms
+COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms/nvidia /tmp/akmods-rpms/nvidia
+COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms/lll /tmp/akmods-rpms/lll
 
-# 3. Instalacja custom kernela z Fabryki
-# rpm zamiast dnf5 — omija exclude filtering Bazzite na pakiety kernel
-# Najpierw usuwamy stary kernel (rpm-ostree pozwala tylko na jeden w /usr/lib/modules)
-RUN rpm -qa | grep -E '^kernel-(core|modules|modules-core|modules-extra)-' | xargs -r rpm -e --nodeps || true
+# 3. Instalacja sterowników NVIDIA z Fabryki
+RUN rpm -ivh --nodeps --force /tmp/akmods-rpms/nvidia/kmod-nvidia*.rpm
 
-RUN rpm -ivh --nodeps --force \
-  /tmp/akmods-rpms/kernel/kernel-*.x86_64.rpm \
-  /tmp/akmods-rpms/kernel/kernel-core-*.rpm \
-  /tmp/akmods-rpms/kernel/kernel-modules-*.rpm \
-  /tmp/akmods-rpms/dummy/*.rpm
-
-# 4. Wstrzyknięcie modułów KO dla nowego kernela
-RUN KERNEL_VERSION=$(rpm -q --qf "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel-core | head -n 1) && \
-  mkdir -p /lib/modules/$KERNEL_VERSION/extra/custom && \
-  cp /tmp/akmods-rpms/kmods/*.ko /lib/modules/$KERNEL_VERSION/extra/custom/ && \
-  depmod -a $KERNEL_VERSION && \
-  rm -rf /tmp/akmods-rpms
+# 4. Instalacja LenovoLegionLinux (Lenovo Legion LOQ 15ARP9i i inne modele)
+RUN rpm -ivh --nodeps --force /tmp/akmods-rpms/lll/kmod-LenovoLegionLinux*.rpm && \
+    rm -rf /tmp/akmods-rpms
 
 # 5. SELinux — tryb permissive dla gamescope (F44 brakuje polityki execmem dla gamescope)
 RUN semanage permissive -a gamescope_t 2>/dev/null || \
@@ -93,9 +83,14 @@ RUN curl -fsSL "${ANTIGRAVITY_IDE_URL}" \
     chmod 4755 /opt/antigravity-ide/chrome-sandbox && \
     ln -sf /opt/antigravity-ide/antigravity-ide /usr/local/bin/antigravity-ide
 
-# 8. Return.desktop — bit wykonywalny (brak w upstream skelecie F44)
+# 8. 3DConnexion SpaceMouse — spacenavd (demon HID dla myszy 3D)
+RUN dnf install -y spacenavd && \
+    systemctl enable spacenavd
+
+# 9. Return.desktop — bit wykonywalny (brak w upstream skelecie F44)
 RUN chmod +x /etc/skel/Desktop/Return.desktop
 
 RUN printf '[Unit]\nDescription=Fix Return.desktop executable bit\nConditionPathExists=!/var/lib/beb-return-desktop-fixed\nAfter=local-fs.target\n\n[Service]\nType=oneshot\nExecStart=/bin/bash -c "find /home -maxdepth 2 -name Return.desktop -exec chmod +x {} \\; && touch /var/lib/beb-return-desktop-fixed"\nRemainAfterExit=yes\n\n[Install]\nWantedBy=multi-user.target\n' \
   > /etc/systemd/system/beb-fix-return-desktop.service
 RUN systemctl enable beb-fix-return-desktop.service
+
