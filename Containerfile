@@ -81,18 +81,18 @@ RUN printf '[Unit]\nDescription=BleedingEdgeBazzite First Boot Diagnostics\nCond
 RUN systemctl enable beb-firstboot.service
 
 # 7. Antigravity 2.0 + Antigravity IDE
-RUN mkdir -p /opt && \
-    curl -fsSL "${ANTIGRAVITY_URL}" \
-    | tar -xz -C /opt/ && \
-    mv /opt/Antigravity-x64 /opt/antigravity && \
-    chmod 4755 /opt/antigravity/chrome-sandbox && \
-    ln -sf /opt/antigravity/antigravity /usr/local/bin/antigravity
+# /opt jest symlinkiem do /var/opt w ostree — niepisalny podczas image build; używamy /usr/lib/
+RUN curl -fsSL "${ANTIGRAVITY_URL}" \
+    | tar -xz -C /usr/lib/ && \
+    mv /usr/lib/Antigravity-x64 /usr/lib/antigravity && \
+    chmod 4755 /usr/lib/antigravity/chrome-sandbox && \
+    ln -sf /usr/lib/antigravity/antigravity /usr/local/bin/antigravity
 
 RUN curl -fsSL "${ANTIGRAVITY_IDE_URL}" \
-    | tar -xz -C /opt/ && \
-    mv "/opt/Antigravity IDE" /opt/antigravity-ide && \
-    chmod 4755 /opt/antigravity-ide/chrome-sandbox && \
-    ln -sf /opt/antigravity-ide/antigravity-ide /usr/local/bin/antigravity-ide
+    | tar -xz -C /usr/lib/ && \
+    mv "/usr/lib/Antigravity IDE" /usr/lib/antigravity-ide && \
+    chmod 4755 /usr/lib/antigravity-ide/chrome-sandbox && \
+    ln -sf /usr/lib/antigravity-ide/antigravity-ide /usr/local/bin/antigravity-ide
 
 # 8. 3DConnexion SpaceMouse — spacenavd (demon HID dla myszy 3D)
 RUN dnf install -y spacenavd && \
