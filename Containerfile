@@ -82,7 +82,9 @@ RUN systemctl enable beb-firstboot.service
 
 # 7. Antigravity 2.0 + Antigravity IDE
 # /opt jest symlinkiem do /var/opt w ostree — niepisalny podczas image build; używamy /usr/lib/
-RUN curl -fsSL "${ANTIGRAVITY_URL}" \
+# /usr/local/bin/ może nie istnieć w bazowym obrazie Bazzite — tworzymy go jawnie
+RUN mkdir -p /usr/local/bin && \
+    curl -fsSL "${ANTIGRAVITY_URL}" \
     | tar -xz -C /usr/lib/ && \
     mv /usr/lib/Antigravity-x64 /usr/lib/antigravity && \
     chmod 4755 /usr/lib/antigravity/chrome-sandbox && \
