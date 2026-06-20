@@ -99,7 +99,12 @@ RUN curl -fsSL "${ANTIGRAVITY_IDE_URL}" \
 RUN dnf install -y spacenavd && \
     systemctl enable spacenavd
 
-# 9. Return.desktop — bit wykonywalny (brak w upstream skelecie F44)
+# 9. iwd — base image (bazzite-deck-nvidia) maskuje iwd na rzecz wpa_supplicant,
+#    ale NM ma wifi.backend=iwd w conf.d — skutkuje WiFi "unavailable" po świeżej instalacji
+RUN systemctl unmask iwd.service && \
+    systemctl enable iwd.service
+
+# 10. Return.desktop — bit wykonywalny (brak w upstream skelecie F44)
 RUN chmod +x /etc/skel/Desktop/Return.desktop
 
 RUN printf '[Unit]\nDescription=Fix Return.desktop executable bit\nConditionPathExists=!/var/lib/beb-return-desktop-fixed\nAfter=local-fs.target\n\n[Service]\nType=oneshot\nExecStart=/bin/bash -c "find /home -maxdepth 2 -name Return.desktop -exec chmod +x {} \\; && touch /var/lib/beb-return-desktop-fixed"\nRemainAfterExit=yes\n\n[Install]\nWantedBy=multi-user.target\n' \
