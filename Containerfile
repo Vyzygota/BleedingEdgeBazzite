@@ -81,20 +81,19 @@ RUN printf '[Unit]\nDescription=BleedingEdgeBazzite First Boot Diagnostics\nCond
 RUN systemctl enable beb-firstboot.service
 
 # 7. Antigravity 2.0 + Antigravity IDE
-# /opt jest symlinkiem do /var/opt w ostree — niepisalny podczas image build; używamy /usr/lib/
-# /usr/local/bin/ może nie istnieć w bazowym obrazie Bazzite — tworzymy go jawnie
-RUN mkdir -p /usr/local/bin && \
-    curl -fsSL "${ANTIGRAVITY_URL}" \
+# /opt i /usr/local to symlinki do /var/opt i /var/usrlocal w ostree — niepisalne podczas build
+# Używamy /usr/lib/ (app) i /usr/bin/ (symlinki) — oba zawsze istnieją w Fedora
+RUN curl -fsSL "${ANTIGRAVITY_URL}" \
     | tar -xz -C /usr/lib/ && \
     mv /usr/lib/Antigravity-x64 /usr/lib/antigravity && \
     chmod 4755 /usr/lib/antigravity/chrome-sandbox && \
-    ln -sf /usr/lib/antigravity/antigravity /usr/local/bin/antigravity
+    ln -sf /usr/lib/antigravity/antigravity /usr/bin/antigravity
 
 RUN curl -fsSL "${ANTIGRAVITY_IDE_URL}" \
     | tar -xz -C /usr/lib/ && \
     mv "/usr/lib/Antigravity IDE" /usr/lib/antigravity-ide && \
     chmod 4755 /usr/lib/antigravity-ide/chrome-sandbox && \
-    ln -sf /usr/lib/antigravity-ide/antigravity-ide /usr/local/bin/antigravity-ide
+    ln -sf /usr/lib/antigravity-ide/antigravity-ide /usr/bin/antigravity-ide
 
 # 8. 3DConnexion SpaceMouse — spacenavd (demon HID dla myszy 3D)
 RUN dnf install -y spacenavd && \
