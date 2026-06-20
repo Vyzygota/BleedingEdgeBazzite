@@ -11,6 +11,8 @@ BleedingEdgeBazzite (BEB) dziedziczy pełne doświadczenie Bazzite (KDE Plasma, 
 Dodatkowo BEB dołącza w obrazie:
 - **Google Antigravity 2.0** — platforma agentów AI, dostępna jako `/usr/local/bin/antigravity`
 - **Google Antigravity IDE** — środowisko programistyczne z AI, dostępne jako `/usr/local/bin/antigravity-ide`
+- **LenovoLegionLinux** — sterownik dla laptopów Lenovo Legion (LOQ 15ARP9i i inne): kontrola wentylatorów, tryby zasilania, battery conservation
+- **spacenavd** — demon HID dla myszy 3DConnexion SpaceMouse
 
 ## Jak działa potok
 
@@ -36,6 +38,8 @@ COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel 
                                 + Return.desktop fix
                                 + Antigravity 2.0 (latest stable)
                                 + Antigravity IDE (latest stable)
+                                + LenovoLegionLinux kmod (COPR mrduarte)
+                                + spacenavd (3DConnexion SpaceMouse)
                               → ghcr.io/vyzygota/bleedingedgebazzite:latest
                                           │
                                           ▼
@@ -53,6 +57,8 @@ COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel 
 | Base image | `ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-{FEDORA}` | Wersja Fedory z dispatcha Fabryki |
 | Antigravity 2.0 | `antigravity.google/releases` | Playwright (`scripts/get-antigravity-urls.mjs`) — pierwszy link Linux x64 |
 | Antigravity IDE | `antigravity.google/download` | Playwright — link Linux x64 dla `Antigravity IDE.tar.gz` |
+| LenovoLegionLinux | COPR `mrduarte/LenovoLegionLinux` | akmod kompilowany przez fabrykę akmods-nvidia-custom |
+| spacenavd | Fedora repos | `dnf install spacenavd` w Containerfile BEB |
 
 > **Kernel:** `kernel.org` podaje `latest_stable`, ale COPR `stable-fedora-releases` buduje z ~1–3 tygodniowym opóźnieniem. Pająk pyta COPR co faktycznie jest dostępne dla aktywnej Fedory — to gwarantuje że instalowany kernel istnieje w repozytorium.
 
