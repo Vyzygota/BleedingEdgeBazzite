@@ -1,8 +1,9 @@
 # syntax=docker/dockerfile:1
 ARG FEDORA_VERSION=44
+FROM ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-${FEDORA_VERSION}
+
 ARG ANTIGRAVITY_URL
 ARG ANTIGRAVITY_IDE_URL
-FROM ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-${FEDORA_VERSION}
 
 LABEL org.opencontainers.image.title="BleedingEdgeBazzite" \
       ostree.bootable="true"
