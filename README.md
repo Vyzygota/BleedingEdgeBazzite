@@ -9,8 +9,8 @@ Bootowalne OCI image na bazie [Bazzite](https://bazzite.gg) z **najnowszym stabi
 BleedingEdgeBazzite (BEB) dziedziczy pełne doświadczenie Bazzite (KDE Plasma, Steam, Gamescope, MangoHud) i zastępuje kernel oraz moduły NVIDIA wersjami zbudowanymi przez fabrykę [akmods-nvidia-custom](https://github.com/Vyzygota/akmods-nvidia-custom). Obraz jest dynamicznie rebazowany na najnowszą stabilną Fedorę.
 
 Dodatkowo BEB dołącza w obrazie:
-- **Google Antigravity 2.0** — platforma agentów AI, dostępna jako `/usr/local/bin/antigravity`
-- **Google Antigravity IDE** — środowisko programistyczne z AI, dostępne jako `/usr/local/bin/antigravity-ide`
+- **Google Antigravity 2.0** — platforma agentów AI, dostępna jako `/usr/bin/antigravity`
+- **Google Antigravity IDE** — środowisko programistyczne z AI, dostępne jako `/usr/bin/antigravity-ide`
 - **LenovoLegionLinux** — sterownik dla laptopów Lenovo Legion (LOQ 15ARP9i i inne): kontrola wentylatorów, tryby zasilania, battery conservation
 - **spacenavd** — demon HID dla myszy 3DConnexion SpaceMouse
 
@@ -38,7 +38,7 @@ COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel 
                                 + Return.desktop fix
                                 + Antigravity 2.0 (latest stable)
                                 + Antigravity IDE (latest stable)
-                                + LenovoLegionLinux kmod (COPR mrduarte)
+                                + LenovoLegionLinux kmod (z Fabryki)
                                 + spacenavd (3DConnexion SpaceMouse)
                               → ghcr.io/vyzygota/bleedingedgebazzite:latest
                                           │
@@ -57,7 +57,7 @@ COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel 
 | Base image | `ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-{FEDORA}` | Wersja Fedory z dispatcha Fabryki |
 | Antigravity 2.0 | `antigravity.google/releases` | Playwright (`scripts/get-antigravity-urls.mjs`) — pierwszy link Linux x64 |
 | Antigravity IDE | `antigravity.google/download` | Playwright — link Linux x64 dla `Antigravity IDE.tar.gz` |
-| LenovoLegionLinux | COPR `mrduarte/LenovoLegionLinux` | akmod kompilowany przez fabrykę akmods-nvidia-custom |
+| LenovoLegionLinux | źródła z Fabryki | akmod kompilowany przez `akmods-nvidia-custom`, `.ko` wstrzykiwane do kernela |
 | spacenavd | Fedora repos | `dnf install spacenavd` w Containerfile BEB |
 
 > **Kernel:** `kernel.org` podaje `latest_stable`, ale COPR `stable-fedora-releases` buduje z ~1–3 tygodniowym opóźnieniem. Pająk pyta COPR co faktycznie jest dostępne dla aktywnej Fedory — to gwarantuje że instalowany kernel istnieje w repozytorium.
@@ -101,6 +101,50 @@ Obrazy przebudowują się automatycznie gdy Fabryka wykryje nowy kernel lub ster
 
 ```bash
 rpm-ostree upgrade
+```
+
+## Uwagi dla deweloperów
+
+### Ścieżki niepisalne podczas `docker build` (ostree/Bazzite)
+
+W obrazach ostree następujące katalogi to **symlinki** do `/var/` i nie można do nich pisać podczas budowania obrazu:
+
+| Ścieżka | Cel symlinka | Objaw błędu |
+|---|---|---|
+| `/opt` | `/var/opt` | `tar: /opt: Cannot open: No such file or directory` |
+| `/usr/local` | `/var/usrlocal` | `mkdir: cannot create directory '/usr/local': File exists` |
+| `/home` | `/var/home` | analogicznie |
+
+**Zasada:** pliki aplikacji → `/usr/lib/<nazwa>/`, symlinki/binarki → `/usr/bin/`.
+
+### Preflight przed każdym commitem do Containerfile
+
+```bash
+# 1. Lint (wtyczka vscode-hadolint lub podman)
+podman run --rm -i ghcr.io/hadolint/hadolint < Containerfile
+
+# 2. Lokalny build (bez push)
+podman build \
+  --build-arg FEDORA_VERSION=44 \
+  --build-arg ANTIGRAVITY_URL=<url> \
+  --build-arg ANTIGRAVITY_IDE_URL=<url> \
+  --file Containerfile --tag beb:test .
+
+# 3. Dopiero wtedy commit
+```
+
+> **Uwaga:** hadolint zgłasza false positive na liniach z heredokiem (`<< 'SCRIPT'`) — to znane ograniczenie narzędzia, nie prawdziwy błąd.
+
+### Fabryka (`akmods-nvidia-custom`)
+
+**Dwa repo — nie mylić:**
+- `akmods-nvidia-custom` — **aktywna Fabryka** (GitHub Actions, ghcr.io)
+- `akmods-nvidia-bazzite-custom` — **zarchiwizowane** (lokalna kopia, nie edytować)
+
+Zanim cokolwiek zmienisz w Fabryce, zweryfikuj aktywne repo:
+```bash
+gh api repos/Vyzygota/akmods-nvidia-custom/contents/Containerfile
+gh repo view Vyzygota/akmods-nvidia-custom --json isArchived
 ```
 
 ---
