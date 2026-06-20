@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "skills": {
+    "graphify": {
+      "source": "vyzygota/agent-rules",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/graphify/SKILL.md"
+    },
+    "self-audit": {
+      "source": "vyzygota/agent-rules",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/self-audit/SKILL.md"
+    },
+    "agent-workflow": {
+      "source": "vyzygota/agent-rules",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/agent-workflow/SKILL.md"
+    },
+    "warp-watch": {
+      "source": "vyzygota/agent-rules",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/warp-watch/SKILL.md"
+    },
+    "ai-chat": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": ".agents/skills/ai-chat/SKILL.md"
+    }
+  }
+}

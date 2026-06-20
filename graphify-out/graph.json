@@ -1,0 +1,645 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "p2p_bridge.py",
+      "file_type": "code",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "p2p_bridge",
+      "community": 2,
+      "norm_label": "p2p_bridge.py"
+    },
+    {
+      "label": "initialize()",
+      "file_type": "code",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "p2p_bridge_initialize",
+      "community": 2,
+      "norm_label": "initialize()"
+    },
+    {
+      "label": "check_for_agy_message()",
+      "file_type": "code",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "p2p_bridge_check_for_agy_message",
+      "community": 2,
+      "norm_label": "check_for_agy_message()"
+    },
+    {
+      "label": "count_turns()",
+      "file_type": "code",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "p2p_bridge_count_turns",
+      "community": 2,
+      "norm_label": "count_turns()"
+    },
+    {
+      "label": "mark_processed()",
+      "file_type": "code",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "p2p_bridge_mark_processed",
+      "community": 2,
+      "norm_label": "mark_processed()"
+    },
+    {
+      "label": "run()",
+      "file_type": "code",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "p2p_bridge_run",
+      "community": 2,
+      "norm_label": "run()"
+    },
+    {
+      "label": "get-antigravity-urls.mjs",
+      "file_type": "code",
+      "source_file": "scripts/get-antigravity-urls.mjs",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scripts_get_antigravity_urls",
+      "community": 5,
+      "norm_label": "get-antigravity-urls.mjs"
+    },
+    {
+      "label": "ag2Url",
+      "file_type": "code",
+      "source_file": "scripts/get-antigravity-urls.mjs",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "scripts_get_antigravity_urls_ag2url",
+      "community": 5,
+      "norm_label": "ag2url"
+    },
+    {
+      "label": "agIdeUrl",
+      "file_type": "code",
+      "source_file": "scripts/get-antigravity-urls.mjs",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "scripts_get_antigravity_urls_agideurl",
+      "community": 5,
+      "norm_label": "agideurl"
+    },
+    {
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".agents/skills/ai-chat/SKILL.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "ai_chat_skill",
+      "community": 3,
+      "norm_label": "skill.md"
+    },
+    {
+      "label": "ai-chat",
+      "file_type": "document",
+      "source_file": ".agents/skills/ai-chat/SKILL.md",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "ai_chat_skill_ai_chat",
+      "community": 3,
+      "norm_label": "ai-chat"
+    },
+    {
+      "label": "Overview",
+      "file_type": "document",
+      "source_file": ".agents/skills/ai-chat/SKILL.md",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "ai_chat_skill_overview",
+      "community": 3,
+      "norm_label": "overview"
+    },
+    {
+      "label": "Installation in a Live Project",
+      "file_type": "document",
+      "source_file": ".agents/skills/ai-chat/SKILL.md",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "ai_chat_skill_installation_in_a_live_project",
+      "community": 3,
+      "norm_label": "installation in a live project"
+    },
+    {
+      "label": "Workflow",
+      "file_type": "document",
+      "source_file": ".agents/skills/ai-chat/SKILL.md",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "ai_chat_skill_workflow",
+      "community": 3,
+      "norm_label": "workflow"
+    },
+    {
+      "label": "CLAUDE.md",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "claude",
+      "community": 0,
+      "norm_label": "claude.md"
+    },
+    {
+      "label": "BleedingEdgeBazzite \u2014 kontekst projektu",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "claude_bleedingedgebazzite_kontekst_projektu",
+      "community": 0,
+      "norm_label": "bleedingedgebazzite \u2014 kontekst projektu"
+    },
+    {
+      "label": "PODSTAWOWE ZA\u0141O\u017bENIE PROJEKTU \u2014 przeczytaj to najpierw",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "claude_podstawowe_za\u0142o\u017cenie_projektu_przeczytaj_to_najpierw",
+      "community": 0,
+      "norm_label": "podstawowe za\u0142ozenie projektu \u2014 przeczytaj to najpierw"
+    },
+    {
+      "label": "Cel projektu",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "claude_cel_projektu",
+      "community": 0,
+      "norm_label": "cel projektu"
+    },
+    {
+      "label": "Architektura potoku (od \u017ar\u00f3d\u0142a do u\u017cytkownika)",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "claude_architektura_potoku_od_\u017ar\u00f3d\u0142a_do_u\u017cytkownika",
+      "community": 0,
+      "norm_label": "architektura potoku (od zrod\u0142a do uzytkownika)"
+    },
+    {
+      "label": "Kluczowe pliki",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "claude_kluczowe_pliki",
+      "community": 0,
+      "norm_label": "kluczowe pliki"
+    },
+    {
+      "label": "Zasady projektu",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "claude_zasady_projektu",
+      "community": 0,
+      "norm_label": "zasady projektu"
+    },
+    {
+      "label": "Zewn\u0119trzne zale\u017cno\u015bci",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L67",
+      "_origin": "ast",
+      "id": "claude_zewn\u0119trzne_zale\u017cno\u015bci",
+      "community": 0,
+      "norm_label": "zewnetrzne zaleznosci"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "readme",
+      "community": 1,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "BleedingEdgeBazzite",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "readme_bleedingedgebazzite",
+      "community": 1,
+      "norm_label": "bleedingedgebazzite"
+    },
+    {
+      "label": "Co to jest",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "readme_co_to_jest",
+      "community": 1,
+      "norm_label": "co to jest"
+    },
+    {
+      "label": "Jak dzia\u0142a potok",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "readme_jak_dzia\u0142a_potok",
+      "community": 1,
+      "norm_label": "jak dzia\u0142a potok"
+    },
+    {
+      "label": "\u0179r\u00f3d\u0142a wersji",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L50",
+      "_origin": "ast",
+      "id": "readme_\u017ar\u00f3d\u0142a_wersji",
+      "community": 1,
+      "norm_label": "zrod\u0142a wersji"
+    },
+    {
+      "label": "Automatyzacja",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L65",
+      "_origin": "ast",
+      "id": "readme_automatyzacja",
+      "community": 1,
+      "norm_label": "automatyzacja"
+    },
+    {
+      "label": "Instalacja",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L71",
+      "_origin": "ast",
+      "id": "readme_instalacja",
+      "community": 4,
+      "norm_label": "instalacja"
+    },
+    {
+      "label": "Opcja A \u2014 ISO (\u015bwie\u017ca instalacja)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "readme_opcja_a_iso_\u015bwie\u017ca_instalacja",
+      "community": 4,
+      "norm_label": "opcja a \u2014 iso (swieza instalacja)"
+    },
+    {
+      "label": "Opcja B \u2014 Rebase z istniej\u0105cego systemu Fedora Atomic",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L82",
+      "_origin": "ast",
+      "id": "readme_opcja_b_rebase_z_istniej\u0105cego_systemu_fedora_atomic",
+      "community": 4,
+      "norm_label": "opcja b \u2014 rebase z istniejacego systemu fedora atomic"
+    },
+    {
+      "label": "Aktualizacje",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L98",
+      "_origin": "ast",
+      "id": "readme_aktualizacje",
+      "community": 1,
+      "norm_label": "aktualizacje"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "p2p_bridge",
+      "target": "p2p_bridge_check_for_agy_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "p2p_bridge",
+      "target": "p2p_bridge_count_turns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "p2p_bridge",
+      "target": "p2p_bridge_initialize",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "p2p_bridge",
+      "target": "p2p_bridge_mark_processed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "p2p_bridge",
+      "target": "p2p_bridge_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "p2p_bridge_run",
+      "target": "p2p_bridge_initialize",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "p2p_bridge_run",
+      "target": "p2p_bridge_check_for_agy_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "p2p_bridge_run",
+      "target": "p2p_bridge_count_turns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "p2p_bridge.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "p2p_bridge_run",
+      "target": "p2p_bridge_mark_processed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/get-antigravity-urls.mjs",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "scripts_get_antigravity_urls",
+      "target": "scripts_get_antigravity_urls_ag2url",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/get-antigravity-urls.mjs",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "scripts_get_antigravity_urls",
+      "target": "scripts_get_antigravity_urls_agideurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/ai-chat/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "ai_chat_skill",
+      "target": "ai_chat_skill_ai_chat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/ai-chat/SKILL.md",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "ai_chat_skill_ai_chat",
+      "target": "ai_chat_skill_installation_in_a_live_project",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/ai-chat/SKILL.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "ai_chat_skill_ai_chat",
+      "target": "ai_chat_skill_overview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/ai-chat/SKILL.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "ai_chat_skill_ai_chat",
+      "target": "ai_chat_skill_workflow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "claude",
+      "target": "claude_bleedingedgebazzite_kontekst_projektu",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "claude_bleedingedgebazzite_kontekst_projektu",
+      "target": "claude_architektura_potoku_od_\u017ar\u00f3d\u0142a_do_u\u017cytkownika",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "claude_bleedingedgebazzite_kontekst_projektu",
+      "target": "claude_cel_projektu",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "claude_bleedingedgebazzite_kontekst_projektu",
+      "target": "claude_kluczowe_pliki",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "claude_bleedingedgebazzite_kontekst_projektu",
+      "target": "claude_podstawowe_za\u0142o\u017cenie_projektu_przeczytaj_to_najpierw",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "claude_bleedingedgebazzite_kontekst_projektu",
+      "target": "claude_zasady_projektu",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "claude_bleedingedgebazzite_kontekst_projektu",
+      "target": "claude_zewn\u0119trzne_zale\u017cno\u015bci",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "readme",
+      "target": "readme_bleedingedgebazzite",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L98",
+      "weight": 1.0,
+      "source": "readme_bleedingedgebazzite",
+      "target": "readme_aktualizacje",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "readme_bleedingedgebazzite",
+      "target": "readme_automatyzacja",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "readme_bleedingedgebazzite",
+      "target": "readme_co_to_jest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "readme_bleedingedgebazzite",
+      "target": "readme_instalacja",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "readme_bleedingedgebazzite",
+      "target": "readme_jak_dzia\u0142a_potok",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "readme_bleedingedgebazzite",
+      "target": "readme_\u017ar\u00f3d\u0142a_wersji",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "readme_instalacja",
+      "target": "readme_opcja_a_iso_\u015bwie\u017ca_instalacja",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "readme_instalacja",
+      "target": "readme_opcja_b_rebase_z_istniej\u0105cego_systemu_fedora_atomic",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "606dfb52d21754f68a899f213832d5edfa7f7477"
+}

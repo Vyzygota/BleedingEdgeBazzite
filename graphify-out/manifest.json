@@ -1,0 +1,47 @@
+{
+  "p2p_bridge.py": {
+    "mtime": 1781973378.71,
+    "ast_hash": "9e2759fee69f7e9ceaa3b20a0908edc1",
+    "semantic_hash": ""
+  },
+  "scripts/get-antigravity-urls.mjs": {
+    "mtime": 1781971406.93,
+    "ast_hash": "507018a6cc65fc5687a12c5a8d5c4456",
+    "semantic_hash": ""
+  },
+  ".agents/skills/ai-chat/SKILL.md": {
+    "mtime": 1781973381.01,
+    "ast_hash": "0e2595630ca98c253a3ec67aef1da63d",
+    "semantic_hash": ""
+  },
+  ".github/dependabot.yml": {
+    "mtime": 1781971429.67,
+    "ast_hash": "4334132ba6bcd78670bf574b6b4236f4",
+    "semantic_hash": ""
+  },
+  ".github/workflows/build.yml": {
+    "mtime": 1781971463.09,
+    "ast_hash": "7ae0b05266e6cda2ed974ef1da8c0d50",
+    "semantic_hash": ""
+  },
+  ".github/workflows/fabryka-watchdog.yml": {
+    "mtime": 1781971429.67,
+    "ast_hash": "333e0f0f5b5562a35edbbb42c6fb4ac0",
+    "semantic_hash": ""
+  },
+  ".github/workflows/iso.yml": {
+    "mtime": 1781971429.67,
+    "ast_hash": "83aca3ca308c027a76eb1f1bf525cabb",
+    "semantic_hash": ""
+  },
+  "CLAUDE.md": {
+    "mtime": 1781971429.67,
+    "ast_hash": "608ef8398abb428fc39ca80d5b4faa2b",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1781972514.61,
+    "ast_hash": "d4822379872ca5744ab3bed4846178c5",
+    "semantic_hash": ""
+  }
+}
