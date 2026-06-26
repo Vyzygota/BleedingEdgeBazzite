@@ -111,3 +111,7 @@ RUN printf '[Unit]\nDescription=Fix Return.desktop executable bit\nConditionPath
   > /etc/systemd/system/beb-fix-return-desktop.service
 RUN systemctl enable beb-fix-return-desktop.service
 
+# 11. Zależności kompilacyjne dla pyaudio / Voice Chat (Antigravity / Hermes)
+# portaudio-devel + python3-devel potrzebne do pip install pyaudio na immutable OS
+RUN dnf install -y portaudio-devel python3-devel gcc
+
