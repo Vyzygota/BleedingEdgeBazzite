@@ -8,6 +8,11 @@ on:
 permissions:
   contents: write
 
+# Jedno ISO naraz: dwa równoległe runy (po buildzie z pusha i z dispatchu Fabryki) nadpisywałyby ten sam asset.
+concurrency:
+  group: beb-iso
+  cancel-in-progress: false
+
 jobs:
   build-iso:
     runs-on: ubuntu-latest
@@ -40,6 +45,8 @@ jobs:
         run: mkksiso --ks installer/beb.ks netinstall.iso BEB-installer.iso
 
       - name: Create or update release and upload ISO
+        # Wydanie installer-latest aktualizujemy tylko z main; run z gałęzi buduje ISO bez publikacji.
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v3
         with:
           tag_name: installer-latest

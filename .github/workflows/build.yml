@@ -14,6 +14,12 @@ permissions:
   contents: read
   packages: write
 
+# Jeden build BEB naraz: push i dispatch z Fabryki nie budują równolegle i nie ścigają się o :latest.
+# Trwającego builda nie przerywamy (publikuje obraz) — kolejny czeka w kolejce.
+concurrency:
+  group: beb-build
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -95,7 +101,8 @@ jobs:
         with:
           context: .
           file: ./Containerfile
-          push: true
+          # Obraz publikujemy tylko z main; run z innej gałęzi robi pełny build bez push i bez dispatchu ISO.
+          push: ${{ github.ref == 'refs/heads/main' }}
           tags: ghcr.io/vyzygota/bleedingedgebazzite:latest
           provenance: false
           build-args: |
@@ -106,7 +113,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Trigger ISO rebuild
-        if: success()
+        if: success() && github.ref == 'refs/heads/main'
         run: |
           curl -s -X POST \
             -H "Accept: application/vnd.github.v3+json" \
