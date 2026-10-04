@@ -8,12 +8,35 @@ on:
 permissions:
   contents: write
 
+# Jedno ISO naraz: dwa równoległe runy (po buildzie z pusha i z dispatchu Fabryki) nadpisywałyby ten sam asset.
+concurrency:
+  group: beb-iso
+  cancel-in-progress: false
+
 jobs:
+  resolve:
+    name: Najnowsza stabilna Fedora
+    runs-on: ubuntu-latest
+    outputs:
+      fedora: ${{ steps.fedora.outputs.fedora }}
+    steps:
+      - name: Wykryj najwyższą wydaną Fedorę
+        id: fedora
+        run: |
+          FEDORA=$(curl -sL https://dl.fedoraproject.org/pub/fedora/linux/releases/ \
+            | grep -oE 'href="[0-9]+/"' | grep -oE '[0-9]+' | sort -rn | head -1)
+          [[ "$FEDORA" =~ ^[0-9]+$ ]] || { echo "::error::Nie udało się ustalić najnowszej Fedory"; exit 1; }
+          echo "fedora=$FEDORA" >> "$GITHUB_OUTPUT"
+          echo "Instalator zbudowany na Fedorze: $FEDORA"
+
   build-iso:
+    needs: resolve
     runs-on: ubuntu-latest
     container:
-      image: fedora:44
+      image: fedora:${{ needs.resolve.outputs.fedora }}
       options: --privileged
+    env:
+      FEDORA: ${{ needs.resolve.outputs.fedora }}
 
     steps:
       - name: Checkout
@@ -22,24 +45,21 @@ jobs:
       - name: Install lorax
         run: dnf install -y lorax wget
 
-      - name: Download Fedora 44 netinstall ISO
+      - name: Download Fedora netinstall ISO
         run: |
-          for BASE in \
-            "https://dl.fedoraproject.org/pub/fedora/linux/releases/44/Everything/x86_64/iso" \
-            "https://dl.fedoraproject.org/pub/fedora/linux/development/44/Everything/x86_64/iso"; do
-            FILENAME=$(curl -s "$BASE/" | grep -oP 'Fedora-Everything-netinst-x86_64-44[^"]+\.iso' | head -1)
-            if [ -n "$FILENAME" ]; then
-              echo "Pobieranie: $BASE/$FILENAME"
-              wget -q "$BASE/$FILENAME" -O netinstall.iso
-              break
-            fi
-          done
-          [ -s netinstall.iso ] || { echo "Nie znaleziono ISO Fedory 44"; exit 1; }
+          BASE="https://dl.fedoraproject.org/pub/fedora/linux/releases/${FEDORA}/Everything/x86_64/iso"
+          FILENAME=$(curl -s "$BASE/" | grep -oP "Fedora-Everything-netinst-x86_64-${FEDORA}[^\"]+\.iso" | head -1)
+          [ -n "$FILENAME" ] || { echo "Nie znaleziono ISO netinstall Fedory ${FEDORA}"; exit 1; }
+          echo "Pobieranie: $BASE/$FILENAME"
+          wget -q "$BASE/$FILENAME" -O netinstall.iso
+          [ -s netinstall.iso ] || { echo "Pobrany plik jest pusty"; exit 1; }
 
       - name: Inject kickstart
         run: mkksiso --ks installer/beb.ks netinstall.iso BEB-installer.iso
 
       - name: Create or update release and upload ISO
+        # Wydanie installer-latest aktualizujemy tylko z main; run z gałęzi buduje ISO bez publikacji.
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v3
         with:
           tag_name: installer-latest
