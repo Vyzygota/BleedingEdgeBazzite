@@ -20,7 +20,7 @@ Dodatkowo BEB dołącza w obrazie:
 Źródła zewnętrzne                 Fabryka (akmods-nvidia-custom)
 ─────────────────                 ──────────────────────────────
 Fedora releases page   ──────→    Cyber-Pająk wykrywa wersje
-NVIDIA latest.txt      ──────→    codziennie o 03:00 UTC
+Bazzite stable-{FEDORA} ──────→    codziennie ok. 03:00 UTC
 COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel RPMs
   stable-fedora-releases            + NVIDIA kmods (.ko)
                                     + pushuje do GHCR
@@ -53,20 +53,21 @@ COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel 
 |---|---|---|
 | Fedora | `dl.fedoraproject.org/pub/fedora/linux/releases/` | Najwyższy numer katalogu, dla którego Bazzite publikuje `stable-{VER}` (przy GA Fedory przed Bazzite zostajemy na poprzedniej) |
 | Kernel | COPR `@kernel-vanilla/fedora` → `stable-fedora-releases` | API COPR dla aktywnego chroota `fedora-{VER}-x86_64` |
-| NVIDIA driver | `download.nvidia.com/XFree86/Linux-x86_64/latest.txt` | Pierwsze pole pierwszej linii |
+| NVIDIA driver | notatki wydania `ublue-os/bazzite` dla obrazu `stable-{FEDORA}` (plik `.run` z `download.nvidia.com`) | Wersja z linii „Nvidia Open” — musi zgadzać się ze sterownikiem w obrazie bazowym, bo kmody są dopasowywane do userspace'u (to świadome odstępstwo od `latest.txt`, patrz `CLAUDE.md`) |
 | Base image | `ghcr.io/ublue-os/bazzite-deck-nvidia:stable-{FEDORA}` | Wersja Fedory z dispatcha Fabryki |
 | Antigravity 2.0 | `antigravity.google/releases` | Playwright (`scripts/get-antigravity-urls.mjs`) — pierwszy link Linux x64 |
 | Antigravity IDE | `antigravity.google/download` | Playwright — link Linux x64 dla `Antigravity IDE.tar.gz` |
-| LenovoLegionLinux | źródła z Fabryki | akmod kompilowany przez `akmods-nvidia-custom`, `.ko` wstrzykiwane do kernela |
+| evdi (DisplayLink) | `DisplayLink/evdi` — najnowszy release | moduł kompilowany przez Fabrykę, `.ko` wstrzykiwane do kernela |
+| LenovoLegionLinux | `johnfanv2/LenovoLegionLinux` — najnowszy release (tag, nie gałąź `main`) | moduł kompilowany przez Fabrykę, `.ko` wstrzykiwane do kernela; adres źródła sprawdza Pająk |
 | spacenavd | Fedora repos | `dnf install spacenavd` w Containerfile BEB |
 
 > **Kernel:** `kernel.org` podaje `latest_stable`, ale COPR `stable-fedora-releases` buduje z ~1–3 tygodniowym opóźnieniem. Pająk pyta COPR co faktycznie jest dostępne dla aktywnej Fedory — to gwarantuje że instalowany kernel istnieje w repozytorium.
 
 ## Automatyzacja
 
-Fabryka sprawdza wersje raz dziennie (03:00 UTC) i buduje tylko gdy coś się zmieniło (`versions.lock`). Każdy udany build Fabryki wyzwala BEB, każdy udany BEB wyzwala ISO — bez ręcznej interwencji.
+Fabryka sprawdza wersje raz dziennie (cron 03:00 UTC — GitHub potrafi opóźnić start o kilka godzin) i buduje tylko gdy coś się zmieniło (`versions.lock`). Każdy udany build Fabryki wyzwala BEB, każdy udany BEB wyzwala ISO — bez ręcznej interwencji.
 
-Watchdog (`fabryka-watchdog.yml`) alarmuje na Discord jeśli Fabryka milczy ponad 2 dni.
+Watchdog (`fabryka-watchdog.yml`) zgłasza awarię, jeśli ostatni udany run Fabryki z `main` jest starszy niż 2 dni (próg: co najmniej 2 dni). Wiadomość na Discord wymaga sekretu `DISCORD_WEBHOOK` skonfigurowanego **w tym repozytorium** — bez niego jedynym sygnałem jest nieudany run i mail z GitHuba. Awarię samego Pająka Fabryka zgłasza osobno na Discord (sekret w repozytorium Fabryki).
 
 ## Instalacja
 
