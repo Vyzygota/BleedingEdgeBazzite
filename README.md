@@ -29,7 +29,7 @@ COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel 
                                           ▼
                               BleedingEdgeBazzite (ten repo)
                               ─────────────────────────────
-                              FROM bazzite-deck-nvidia:unstable-{FEDORA}
+                              FROM bazzite-deck-nvidia:stable-{FEDORA}
                                 + kernel RPMs z Fabryki
                                 + NVIDIA kmods z Fabryki
                                 + blacklist nouveau (4 poziomy)
@@ -51,10 +51,10 @@ COPR kernel-vanilla    ──────→    jeśli zmiany → buduje kernel 
 
 | Składnik | Źródło | Metoda wykrywania |
 |---|---|---|
-| Fedora | `dl.fedoraproject.org/pub/fedora/linux/releases/` | Najwyższy numer katalogu |
+| Fedora | `dl.fedoraproject.org/pub/fedora/linux/releases/` | Najwyższy numer katalogu, dla którego Bazzite publikuje `stable-{VER}` (przy GA Fedory przed Bazzite zostajemy na poprzedniej) |
 | Kernel | COPR `@kernel-vanilla/fedora` → `stable-fedora-releases` | API COPR dla aktywnego chroota `fedora-{VER}-x86_64` |
 | NVIDIA driver | `download.nvidia.com/XFree86/Linux-x86_64/latest.txt` | Pierwsze pole pierwszej linii |
-| Base image | `ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-{FEDORA}` | Wersja Fedory z dispatcha Fabryki |
+| Base image | `ghcr.io/ublue-os/bazzite-deck-nvidia:stable-{FEDORA}` | Wersja Fedory z dispatcha Fabryki |
 | Antigravity 2.0 | `antigravity.google/releases` | Playwright (`scripts/get-antigravity-urls.mjs`) — pierwszy link Linux x64 |
 | Antigravity IDE | `antigravity.google/download` | Playwright — link Linux x64 dla `Antigravity IDE.tar.gz` |
 | LenovoLegionLinux | źródła z Fabryki | akmod kompilowany przez `akmods-nvidia-custom`, `.ko` wstrzykiwane do kernela |
@@ -125,7 +125,7 @@ podman run --rm -i ghcr.io/hadolint/hadolint < Containerfile
 
 # 2. Lokalny build (bez push)
 podman build \
-  --build-arg FEDORA_VERSION=44 \
+  --build-arg FEDORA_VERSION=<wersja Fedory, dla której Bazzite ma stable-{VER}> \
   --build-arg ANTIGRAVITY_URL=<url> \
   --build-arg ANTIGRAVITY_IDE_URL=<url> \
   --file Containerfile --tag beb:test .
