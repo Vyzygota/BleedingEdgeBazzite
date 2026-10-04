@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG FEDORA_VERSION=44
-FROM ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-${FEDORA_VERSION}
+ARG FEDORA_VERSION
+FROM ghcr.io/ublue-os/bazzite-deck-nvidia:stable-${FEDORA_VERSION}
 
 ARG ANTIGRAVITY_URL
 ARG ANTIGRAVITY_IDE_URL

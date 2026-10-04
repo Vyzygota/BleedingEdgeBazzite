@@ -8,7 +8,7 @@ Dotyczy to **każdego** elementu potoku:
 - Kernel Linux → najnowszy stable z COPR `@kernel-vanilla/fedora` (vanilla, bez patchy dystrybucji)
 - Sterownik NVIDIA → najnowszy stable `.run` z `download.nvidia.com`
 - Fedora → najnowsza stabilna wersja jako baza
-- Bazzite base image → `bazzite-deck-nvidia:unstable-{FEDORA_VERSION}`
+- Bazzite base image → `bazzite-deck-nvidia:stable-{FEDORA_VERSION}` (kanał `unstable-*` jest od 17.09.2026 zamrożony)
 
 **Jeśli proponujesz zablokowanie wersji, cofnięcie do starszej lub pominięcie aktualizacji — uzasadnij to konkretnym technicznym blokerem, nie ostrożnością.** Projekt nazywa się *BleedingEdge* z powodu.
 
@@ -35,7 +35,7 @@ kernel.org / COPR             NVIDIA           Fedora
               • Wysyła repository_dispatch → BEB z fedora_version w payload
                          ↓
                    Containerfile  ← centrum projektu
-              • FROM bazzite-deck-nvidia:unstable-${FEDORA_VERSION}
+              • FROM bazzite-deck-nvidia:stable-${FEDORA_VERSION}
               • Injectuje kernel RPMs z Fabryki
               • Injectuje NVIDIA kmods
               • Konfiguruje SELinux, nouveau blacklist, kargs
@@ -68,7 +68,7 @@ kernel.org / COPR             NVIDIA           Fedora
 
 | Zależność | Źródło | Śledzona przez |
 |---|---|---|
-| Base image | `ghcr.io/ublue-os/bazzite-deck-nvidia:unstable-{FEDORA}` | Fabryka (dispatch) |
+| Base image | `ghcr.io/ublue-os/bazzite-deck-nvidia:stable-{FEDORA}` | Fabryka (dispatch) |
 | Kernel RPMs | COPR `@kernel-vanilla/fedora` `stable-fedora-releases` | Fabryka (Cyber-Pająk) |
 | NVIDIA driver | `download.nvidia.com/XFree86/Linux-x86_64/latest.txt` | Fabryka (Cyber-Pająk) |
 | akmods-nvidia-custom | `ghcr.io/vyzygota/akmods-nvidia-custom:latest` | Fabryka watchdog |
