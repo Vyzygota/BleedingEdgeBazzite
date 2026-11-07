@@ -30,7 +30,10 @@ COPY --from=ghcr.io/vyzygota/akmods-nvidia-custom:latest /rpms /tmp/akmods-rpms
 # Najpierw usuwamy stary kernel (rpm-ostree pozwala tylko na jeden w /usr/lib/modules)
 RUN rpm -qa | grep -E '^kernel-(core|modules|modules-core|modules-extra)-' | xargs -r rpm -e --nodeps || true
 
-RUN rpm -ivh --nodeps --force \
+# --nosignature: pakiety pochodzą z naszej Fabryki (kernel z COPR bez klucza w rpmdb, dummy bez podpisu).
+# Na Fedorze 44 brak klucza kończył się ostrzeżeniem NOKEY; od Fedory 45 rpm odrzuca takie pakiety
+# ("does not verify", exit 7), więc pomijamy sprawdzanie podpisów jawnie — efekt jak dotąd.
+RUN rpm -ivh --nodeps --force --nosignature \
   /tmp/akmods-rpms/kernel/kernel-*.x86_64.rpm \
   /tmp/akmods-rpms/kernel/kernel-core-*.rpm \
   /tmp/akmods-rpms/kernel/kernel-modules-*.rpm \
