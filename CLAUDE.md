@@ -6,7 +6,7 @@
 
 Dotyczy to **każdego** elementu potoku:
 - Kernel Linux → najnowszy stable z COPR `@kernel-vanilla/fedora` (vanilla, bez patchy dystrybucji)
-- Sterownik NVIDIA → najnowszy stable `.run` z `download.nvidia.com` — **odstępstwo (techniczny bloker, do potwierdzenia):** Fabryka bierze wersję z notatek wydania Bazzite dla `stable-{FEDORA}`, bo kmody muszą zgadzać się ze sterownikiem userspace w obrazie bazowym; `latest.txt` bywa inną gałęzią sterownika
+- Sterownik NVIDIA → najnowszy stable `.run` z `download.nvidia.com` — **zatwierdzone odstępstwo (techniczny bloker):** Fabryka bierze wersję z notatek wydania Bazzite dla `stable-{FEDORA}`, bo `Containerfile` wstrzykuje tylko moduły `.ko`, a userspace pochodzi z obrazu bazowego, i oba muszą mieć dokładnie tę samą wersję; `latest.txt` bywa inną gałęzią sterownika. Skutek: nowsze wydanie NVIDII trafia do BEB, gdy Bazzite wprowadzi je do `stable`
 - Fedora → najnowsza stabilna wersja jako baza
 - Bazzite base image → `bazzite-deck-nvidia:stable-{FEDORA_VERSION}` (kanał `unstable-*` jest od 17.09.2026 zamrożony)
 
@@ -70,7 +70,7 @@ kernel.org / COPR             NVIDIA           Fedora
 |---|---|---|
 | Base image | `ghcr.io/ublue-os/bazzite-deck-nvidia:stable-{FEDORA}` | Fabryka (dispatch) |
 | Kernel RPMs | COPR `@kernel-vanilla/fedora` `stable-fedora-releases` | Fabryka (Cyber-Pająk) |
-| NVIDIA driver | notatki wydania `ublue-os/bazzite` dla `stable-{FEDORA}` (patrz odstępstwo wyżej) | Fabryka (Cyber-Pająk) |
+| NVIDIA driver | notatki wydania `ublue-os/bazzite` dla `stable-{FEDORA}` (zatwierdzone odstępstwo, patrz wyżej) | Fabryka (Cyber-Pająk) |
 | evdi | `DisplayLink/evdi` — najnowszy release | Fabryka (Cyber-Pająk) |
 | LenovoLegionLinux | `johnfanv2/LenovoLegionLinux` — najnowszy release (tag) | Fabryka (Cyber-Pająk) |
 | akmods-nvidia-custom | `ghcr.io/vyzygota/akmods-nvidia-custom:latest` | Fabryka watchdog |
